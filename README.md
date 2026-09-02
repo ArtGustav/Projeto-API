@@ -137,6 +137,3 @@ Acesse `http://localhost:3000/` para uma página com links clicáveis, ou use fe
 └── README.md
 ```
 
-## Autor
-
-Prof. Joelson Silva

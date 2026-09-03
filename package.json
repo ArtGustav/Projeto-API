@@ -1,11 +1,12 @@
 {
   "name": "atv-ios",
   "version": "1.0.0",
-  "description": "",
+  "description": "Atividade prática API Express + PostgreSQL",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -r dotenv/config server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon -r dotenv/config backend/server.js",
+    "dev": "nodemon -r dotenv/config backend/server.js",
+    "db:seed": "psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME -f database/tabela_produtos.sql"
   },
   "keywords": [],
   "author": "",

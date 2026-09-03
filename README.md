@@ -29,12 +29,18 @@ Crie o database e a tabela de produtos executando o script SQL:
 
 ```bash
 psql -U postgres -d postgres -c "CREATE DATABASE atv_ios;"
-psql -U postgres -d atv_ios -f tabela_produtos.sql
+psql -U postgres -d atv_ios -f database/tabela_produtos.sql
+```
+
+Ou via script do projeto:
+
+```bash
+npm run db:seed
 ```
 
 ### 3. Configure as variáveis de ambiente
 
-Copie o `.env` e ajuste as credenciais do PostgreSQL:
+Edite o `.env` com as credenciais do PostgreSQL:
 
 ```
 DB_HOST=localhost
@@ -56,10 +62,11 @@ O servidor rodará em `http://localhost:3000` com reload automático via nodemon
 
 | Método | Rota             | Descrição                                   | Status de Sucesso |
 |--------|------------------|---------------------------------------------|-------------------|
-| GET    | `/`              | Página inicial com links para os endpoints | 200               |
+| GET    | `/`              | Frontend da aplicação                       | 200               |
 | GET    | `/produtos`      | Lista todos os produtos                     | 200               |
 | GET    | `/produtos/:id`  | Retorna um produto pelo ID                  | 200 / 404         |
 | POST   | `/produtos`      | Cadastra um novo produto                    | 201               |
+| DELETE | `/produtos/:id`  | Remove um produto pelo ID                   | 204 / 404         |
 
 ### GET /produtos
 
@@ -123,18 +130,37 @@ Cadastra um novo produto.
 
 ## Testando a API
 
-Acesse `http://localhost:3000/` para uma página com links clicáveis, ou use ferramentas como **Thunder Client** (extensão VS Code) ou **Postman** para testar os endpoints diretamente.
+Acesse `http://localhost:3000` para a interface web, ou use ferramentas como **Thunder Client** (extensão VS Code) ou **Postman** para testar os endpoints diretamente.
 
 ## Estrutura do Projeto
 
 ```
 .
-├── server.js                 Server principal (API + conexão PostgreSQL)
-├── package.json              Dependências e scripts
-├── .env                      Variáveis de ambiente (não versionado)
+├── backend/
+│   ├── server.js              Entrada do servidor Express
+│   ├── db/
+│   │   └── index.js           Conexão com PostgreSQL
+│   ├── routes/
+│   │   └── produtos.js        Rotas da API de produtos
+│   └── exemplos/
+│       └── index.js           Exemplos didáticos de async/await/try/catch/finally
+├── frontend/
+│   ├── index.html             Página inicial
+│   ├── script.js              JavaScript da interface
+│   └── style.css              Estilos da página
+├── database/
+│   └── tabela_produtos.sql    Script SQL de criação e seed
+├── package.json
+├── .env
 ├── .gitignore
-├── tabela_produtos.sql       Script de criação da tabela e dados iniciais
 └── README.md
+```
+
+## Scripts disponíveis
+
+```bash
+npm start      # Inicia o servidor com nodemon
+npm run db:seed # Executa o script SQL no banco
 ```
 
 ## Autor

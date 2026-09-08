@@ -210,4 +210,4 @@ npm run db:seed # Executa o script SQL no banco de dados
 
 ## Autor
 
-Prof. Joelson Silva
+Gustavo_Dev

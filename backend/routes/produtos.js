@@ -1,6 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const fs = require('fs');
+const path = require('path');
+
+function exportarProdutosParaSQL(produtos) {
+  const caminhoArquivo = path.join(__dirname, '../../database/tabela_produtos.sql');
+
+  let sql = '-- Script para criacao da tabela e dados atuais de produtos\n';
+  sql += 'CREATE TABLE produtos (\n';
+  sql += '    id SERIAL PRIMARY KEY,\n';
+  sql += '    nome VARCHAR(100) NOT NULL,\n';
+  sql += '    preco DECIMAL(10, 2) NOT NULL,\n';
+  sql += '    descricao TEXT\n';
+  sql += ');\n\n';
+
+  sql += 'TRUNCATE TABLE produtos RESTART IDENTITY;\n\n';
+
+  if (produtos.length > 0) {
+    const valores = produtos.map(p => {
+      const nome = (p.nome || '').replace(/'/g, "''");
+      const desc = p.descricao ? `'${String(p.descricao).replace(/'/g, "''")}'` : 'NULL';
+      return `('${nome}', ${p.preco}, ${desc})`;
+    }).join(',\n');
+    sql += `INSERT INTO produtos (nome, preco, descricao) VALUES \n${valores};\n`;
+  }
+
+  try {
+    fs.writeFileSync(caminhoArquivo, sql, 'utf8');
+  } catch (err) {
+    console.error('Erro ao exportar SQL:', err);
+  }
+}
 
 router.get('/', async (req, res) => {
   try {
@@ -41,7 +72,11 @@ router.post('/', async (req, res) => {
       [nome, preco, descricao]
     );
 
-    res.status(201).json(result.rows[0]);
+    const produtoCriado = result.rows[0];
+    const todos = await pool.query('SELECT * FROM produtos');
+    exportarProdutosParaSQL(todos.rows);
+
+    res.status(201).json(produtoCriado);
   } catch (err) {
     console.error('Erro ao adicionar produto:', err.stack);
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -66,6 +101,9 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Produto não encontrado' });
     }
 
+    const todos = await pool.query('SELECT * FROM produtos');
+    exportarProdutosParaSQL(todos.rows);
+
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Erro ao atualizar produto:', err.stack);
@@ -81,6 +119,9 @@ router.delete('/:id', async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Produto não encontrado' });
     }
+
+    const todos = await pool.query('SELECT * FROM produtos');
+    exportarProdutosParaSQL(todos.rows);
 
     res.status(204).send();
   } catch (err) {

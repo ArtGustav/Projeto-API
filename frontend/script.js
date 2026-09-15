@@ -2,6 +2,11 @@
 const url = "http://localhost:3000/produtos";
 
 let todosProdutos = [];
+const atualizarSql = document.getElementById('atualizar-sql');
+
+function dadosComAtualizacaoSQL(dados) {
+    return { ...dados, atualizarSql: atualizarSql.checked };
+}
 
 /**
  * 1. BUSCAR PRODUTOS (GET)
@@ -56,7 +61,7 @@ formulario.addEventListener("submit", async function(evento) {
         const preco = document.getElementById("preco").value;
         const descricao = document.getElementById("descricao").value;
 
-        const dados = { nome, preco: Number(preco), descricao };
+        const dados = dadosComAtualizacaoSQL({ nome, preco: Number(preco), descricao });
 
         const resposta = await fetch(url, {
             method: 'POST',
@@ -90,7 +95,7 @@ formularioEditar.addEventListener("submit", async function(evento) {
         const preco = document.getElementById("editar-preco").value;
         const descricao = document.getElementById("editar-descricao").value;
 
-        const dados = { nome, preco: Number(preco), descricao };
+        const dados = dadosComAtualizacaoSQL({ nome, preco: Number(preco), descricao });
 
         const resposta = await fetch(`${url}/${id}`, {
             method: 'PUT',
@@ -120,8 +125,11 @@ async function excluirProduto(id) {
     }
 
     try {
+        const dados = dadosComAtualizacaoSQL({});
         const resposta = await fetch(`${url}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
         });
 
         if (resposta.ok || resposta.status === 204) {

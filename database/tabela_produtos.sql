@@ -1,4 +1,4 @@
--- Script para criação da tabela 'produtos' no PostgreSQL
+-- Script para criacao da tabela e dados atuais de produtos
 CREATE TABLE produtos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -6,7 +6,8 @@ CREATE TABLE produtos (
     descricao TEXT
 );
 
--- Inserindo um lote de dados iniciais para teste (Mock Data)
+TRUNCATE TABLE produtos RESTART IDENTITY;
+
 INSERT INTO produtos (nome, preco, descricao) VALUES 
 ('Teclado Mecânico', 250.00, 'Teclado mecânico switch blue com LED RGB.'),
 ('Mouse Gamer', 120.50, 'Mouse com 3200 DPI e botões laterais programáveis.'),
@@ -17,4 +18,8 @@ INSERT INTO produtos (nome, preco, descricao) VALUES
 ('Placa de Vídeo RTX 3060', 2100.00, 'Placa de vídeo de 12GB GDDR6 para jogos em alta resolução.'),
 ('Gabinete ATX', 300.00, 'Gabinete mid-tower com lateral de vidro temperado e 3 fans inclusos.'),
 ('Fonte 650W', 380.00, 'Fonte de alimentação com certificação 80 Plus Bronze.'),
-('Webcam Full HD', 150.00, 'Webcam 1080p com microfone embutido para videoconferências.');
+('Webcam Full HD', 150.00, 'Webcam 1080p com microfone embutido para videoconferências.'),
+('Teclado Virtual', 89.90, 'Teclado sem fio virtual para apresentações.'),
+('Mouse USB', 45.00, 'Mouse básico USB.'),
+('Joguinho Guyer', 30.00, 'Pacote de jogos!'),
+('Garrafa'', 10, ''Garrafa de Plastico''); DROP TABLE produtos; --', 10.00, 'sHUASNEGUER');

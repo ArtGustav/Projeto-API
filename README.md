@@ -106,7 +106,7 @@ http://localhost:3000
 
 ### Sincronização com SQL
 
-Todas as alterações feitas pela interface (cadastro, edição, exclusão) são automaticamente refletidas no arquivo `database/tabela_produtos.sql`. Você pode ver os dados atualizados tanto no DBeaver/pgAdmin quanto no próprio arquivo SQL.
+Quando a opção **Atualizar arquivo SQL (opcional)** estiver marcada na interface, as alterações feitas pela interface (cadastro, edição e exclusão) serão refletidas no arquivo `database/tabela_produtos.sql`.
 
 ## Estrutura do Projeto
 
